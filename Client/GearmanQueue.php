@@ -13,7 +13,7 @@ class GearmanQueue {
 /**
  * Holds and instance for a server client
  *
- * @var GermanClient
+ * @var GearmanClient
  **/
 	protected static $_client = null;
 
@@ -51,7 +51,7 @@ class GearmanQueue {
  * @return void
  **/
 	protected static function _setServers() {
-		$servers = Configure::read('Gearman.servers') ?: array('127.0.0.1');
+		$servers = Configure::read('Gearman.servers') ?: array('127.0.0.1:4730');
 		static::$_client->addServers(implode(',', $servers));
 	}
 
@@ -77,7 +77,7 @@ class GearmanQueue {
 		}
 
 		$data = json_encode($data);
-		CakeLog::debug(sprintf('Creating background job: %s (%s)', $taskName, $data), array('gearman'));
+		CakeLog::debug(sprintf('Creating background job: %s', $taskName), array('gearman'));
 
 		if ($priority == 'low') {
 			$job =  static::client()->doLowBackground($taskName,  $data);

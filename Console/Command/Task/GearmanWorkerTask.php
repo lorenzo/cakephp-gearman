@@ -25,6 +25,13 @@ class GearmanWorkerTask extends AppShell {
 	protected $_eventManager;
 
 /**
+ * List of worker functions that will be internally sub-dispatched
+ *
+ * @var array
+ */
+	protected $_callbacks;
+
+/**
  * A wrapper for the normal GearmanWorker::work() method, with some additional settings
  *
  * @param string $name the name of the task this worker implements
@@ -63,7 +70,7 @@ class GearmanWorkerTask extends AppShell {
 	public function getWorker() {
 		if (empty($this->_worker)) {
 			$this->_worker = new GearmanWorker;
-			$servers = Configure::read('Gearman.servers') ?: array('127.0.0.1');
+			$servers = Configure::read('Gearman.servers') ?: array('127.0.0.1:4730');
 			$this->_worker->addServers(implode(',', (array)$servers));
 		}
 		return $this->_worker;
@@ -83,16 +90,23 @@ class GearmanWorkerTask extends AppShell {
  * Registers an object method to be called as a worker function for a specific task name
  *
  * @param string $name the name of the task to susbscribe for
- * @param object $object the object that contains the worker method
+ * @param object|callable $object the object that contains the worker method
  * @param string $method the name of the method that will be called with the job
  * @return void
  */
-	public function addFunction($name, $object, $method) {
+	public function addFunction($name, $object, $method = null) {
 		$prefix = Configure::read('Gearman.prefix');
 		if ($prefix) {
 			$name = $prefix . '_' . $name;
 		}
-		$this->getWorker()->addFunction($name, array($objet, $method));
+
+		if ($method) {
+			$this->_callbacks[$name] = [$object, $method];
+		} else {
+			$this->_callbacks[$name] = $object;
+		}
+
+		$this->getWorker()->addFunction($name, array($this, '_work'));
 	}
 
 /**
@@ -143,6 +157,17 @@ class GearmanWorkerTask extends AppShell {
 				sleep(1);
 			}
 		}, 'Gearman.afterWait');
+	}
+
+/**
+ * The function that is used for all jobs, it will sub-dispatch to the real function
+ * Useful for registering closures
+ *
+ * @return void
+ */
+	public function _work(GearmanJob $job) {
+		$data = json_decode($job->workload(), true);
+		call_user_func($this->_callbacks[$job->functionName()], $data, $job);
 	}
 
 }
