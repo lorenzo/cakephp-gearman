@@ -1,0 +1,18 @@
+{
+    "name": "lorenzo/cakephp-gearman",
+    "description": "Gearman utilities for CakePHP",
+    "type": "cakephp-plugin",
+    "keywords": ["cakephp", "gearman", "queue", "server"],
+    "homepage": "https://github.com/lorenzo/cakephp-gearman",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "José Lorenzo Rodríguez",
+            "role": "Author"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "composer/installers": "*"
+    }
+}
