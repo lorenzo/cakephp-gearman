@@ -19,7 +19,7 @@ class SomeController extends AppController{
 
   public function Somefunction(){
     //do awesome stuff
-    GearmanQueue::execute('build_newsletter', ['user' => $user]);
+    GearmanQueue::execute('build_newsletter', ['User' => $user]);
   }
   
 }
@@ -59,7 +59,17 @@ class NewsletterShell extends AppShell {
  * @return void
  */
     public function sendNewsLetter($data) {
-         ...
+        $Email = new CakeEmail('smtp');
+        try{
+            $Email->template('exampleContent', 'someLayout')
+                ->to($data['User']['email'])
+                ->subject('First Gearman email.')
+                ->emailFormat('text')
+                ->viewVars(array('data' => $data))
+                ->send();
+        }catch(Exception $e){
+            //handle error
+        }
     }
  
 }
