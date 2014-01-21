@@ -3,7 +3,7 @@ cakephp-gearman
 
 Gearman utilities for CakePHP
 
-Cakephp-Gearman is an plugin to integrate gearman into cakephp applications.
+Cakephp-Gearman is a plugin to integrate gearman into cakephp applications.
 
 Installation
 ============
