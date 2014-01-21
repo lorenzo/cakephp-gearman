@@ -9,11 +9,11 @@ Installation
 ============
 1. install the gearman php extension ( @see http://gearman.org/getting-started/ for instructions )
 2. install the joze_zap's cakephp gearman plugin (clone it and load it like u usually do with other cake plugins)
-3. implement your own Shell with "public $tasks = ['Gearman.GearmanWorker'];"
+3. implement your own Shell with ```php public $tasks = ['Gearman.GearmanWorker'];```
 
 Example Usage
 =============
-[c]
+```php
 App::uses('GearmanQueue', 'Gearman.Client');
 class SomeController extends AppController{
 
@@ -23,8 +23,8 @@ class SomeController extends AppController{
   }
   
 }
-[/c]
-[c]
+```
+```php
 App::uses('AppShell', 'Console/Command');
 App::uses('CakeEmail', 'Network/Email');
  
@@ -63,7 +63,7 @@ class NewsletterShell extends AppShell {
     }
  
 }
-[c/]
+```
 
 Known issues
 ============
