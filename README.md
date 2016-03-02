@@ -74,7 +74,3 @@ class NewsletterShell extends AppShell {
  
 }
 ```
-
-Known issues
-============
-If you get some mysql connection lost error, you have to change your php.ini like this....
