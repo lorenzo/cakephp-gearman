@@ -5,6 +5,10 @@ Gearman utilities for CakePHP
 
 Cakephp-Gearman is a plugin to integrate gearman into cakephp applications.
 
+> This repository is no longer maintained. You might want to try
+> [cvo-technologies/cakephp-gearman](https://github.com/cvo-technologies/cakephp-gearman)
+> instead.
+
 Installation
 ============
 1. install the gearman php extension ( @see http://gearman.org/getting-started/ for instructions )
